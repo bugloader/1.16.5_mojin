@@ -14,7 +14,7 @@ apply plugin: 'maven-publish'
 
 version = '1.0'
 group = 'com.meack.goldtoucher' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = 'modid'
+archivesBaseName = 'goldtoucher'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(8) // Mojang ships Java 8 to end users, so your mod should target Java 8.
 
