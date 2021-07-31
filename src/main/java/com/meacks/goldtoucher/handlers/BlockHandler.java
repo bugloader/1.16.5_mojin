@@ -18,10 +18,18 @@ import java.util.List;
 
 public class BlockHandler {
     public static final List<Block> BLOCKS = new ArrayList<>();
-    public static final Block tombWall = createBlockWithItem(Material.STONE,"tomb_wall", GoldToucher.TOMB_Block_GROUP);
+    public static final Block tombBricks = createBlockWithItem(AbstractBlock.Properties.of(Material.STONE).strength(10),"tomb_bricks", GoldToucher.TOMB_Block_GROUP);
 
     public static Block createBlockWithItem(Material properties, String registryName, ItemGroup tab){
         Block block = new Block(AbstractBlock.Properties.of(properties));
+        block.setRegistryName(registryName);
+        BlockHandler.BLOCKS.add(block);
+        ItemHandler.ITEMS.add(new BlockItem(block,new Item.Properties().tab(tab)).setRegistryName(registryName));
+        return block;
+    }
+
+    public static Block createBlockWithItem(AbstractBlock.Properties properties, String registryName, ItemGroup tab){
+        Block block = new Block(properties);
         block.setRegistryName(registryName);
         BlockHandler.BLOCKS.add(block);
         ItemHandler.ITEMS.add(new BlockItem(block,new Item.Properties().tab(tab)).setRegistryName(registryName));
@@ -35,6 +43,8 @@ public class BlockHandler {
         ItemHandler.ITEMS.add(new BlockItem(block,new Item.Properties().tab(tab)).setRegistryName(registryName));
         return block;
     }
+
+
 
     public static boolean areSameBlockType(Block block1,Block block2){
         return block1==block2;

@@ -1,0 +1,21 @@
+{
+  "block.goldtoucher.tomb_bricks": "墓穴砖",
+
+  "item.goldtoucher.tomb_bricks": "墓穴砖",
+  "item.goldtoucher.gecko_pellet": "守宫丹",
+  "item.goldtoucher.bone_spicule": "骨针",
+  "item.goldtoucher.black_donkey_hoof": "黑驴蹄子",
+  "item.goldtoucher.ancient_zombie": "古尸",
+
+  "entity.goldtoucher.ancient_zombie": "古尸",
+
+  "effect.goldtoucher.ancient_poison": "尸毒",
+  "effect.goldtoucher.ancient_poison2": "尸毒2",
+  "effect.goldtoucher.ancient_poison3": "尸毒3",
+  "effect.goldtoucher.ancient_poison4": "尸毒4",
+  "effect.goldtoucher.ancient_poison5": "尸毒5",
+  "effect.goldtoucher.ancient_poison_antidote": "尸毒抗体",
+
+  "itemGroup.tomb_item": "倒斗物品",
+  "itemGroup.tomb_block": "墓穴方块"
+}

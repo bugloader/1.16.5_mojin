@@ -1,9 +1,15 @@
 package com.meacks.goldtoucher;
 
+import com.meacks.goldtoucher.entities.AncientZombieEntity;
+import com.meacks.goldtoucher.entities.renders.AncientZombieRender;
+import com.meacks.goldtoucher.entities.renders.MetalUmbrellaRender;
 import com.meacks.goldtoucher.handlers.*;
 import jdk.jfr.Name;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.renderer.entity.ZombieRenderer;
+import net.minecraft.client.renderer.entity.ZombieVillagerRenderer;
+import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -53,6 +59,13 @@ public class GoldToucher
 
     public GoldToucher() {
         final IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        // Register ourselves for server and other game events we are interested in
+        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, OreHandler::generateOres);
+        EntityHandler.ENTITY_TYPE_DEFERRED_REGISTER.register(bus);
+        TileEntityHandler.TILE_ENTITY_TYPE_DEFERRED_REGISTER.register(bus);
+        EffectHandler.EFFECT_TYPE_DEFERRED_REGISTER.register(bus);
+
         // Register the setup method for modloading
         bus.addListener(this::setup);
         // Register the enqueueIMC method for modloading
@@ -62,17 +75,18 @@ public class GoldToucher
         // Register the doClientStuff method for modloading
         bus.addListener(this::doClientStuff);
 
-        EntityHandler.ENTITY_TYPE_DEFERRED_REGISTER.register(bus);
-        TileEntityHandler.TILE_ENTITY_TYPE_DEFERRED_REGISTER.register(bus);
-
-        // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.addListener(EventPriority.HIGH, OreHandler::generateOres);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void setup(final FMLCommonSetupEvent event)
     {
+
         // some preinit code
+        event.enqueueWork(() ->
+        {
+            GlobalEntityTypeAttributes.put(EntityHandler.ANCIENT_ZOMBIE_REGISTRY_OBJECT.get(), AncientZombieEntity.createAttributes().build());
+
+        });
         LOGGER.info("HELLO FROM PREINIT");
     }
 
@@ -84,7 +98,7 @@ public class GoldToucher
     private void enqueueIMC(final InterModEnqueueEvent event)
     {
         // some example code to dispatch IMC to another mod
-        InterModComms.sendTo("examplemod", "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
+        InterModComms.sendTo(MODID, "helloworld", () -> { LOGGER.info("Hello world from the MDK"); return "Hello world";});
     }
 
     private void processIMC(final InterModProcessEvent event)
@@ -120,6 +134,8 @@ public class GoldToucher
     public static class ClientRegistry {
         @SubscribeEvent
         public static void onClientSetUpEvent(FMLClientSetupEvent event) {
+            RenderingRegistry.registerEntityRenderingHandler(EntityHandler.ANCIENT_ZOMBIE_REGISTRY_OBJECT.get(), ZombieRenderer::new);
+            RenderingRegistry.registerEntityRenderingHandler(EntityHandler.METAL_UMBRELLA_REGISTRY_OBJECT.get(), MetalUmbrellaRender::new);
 
         }
     }
