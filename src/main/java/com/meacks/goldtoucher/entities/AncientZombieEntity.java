@@ -25,8 +25,11 @@ import net.minecraftforge.fml.network.NetworkHooks;
 
 
 public class AncientZombieEntity extends ZombieEntity {
-    private static final DataParameter<Integer> freezingTimeData =
+    public static final DataParameter<Integer> freezingTimeData =
             EntityDataManager.defineId(AncientZombieEntity.class, DataSerializers.INT);
+
+    public static final DataParameter<Boolean> lyingData =
+            EntityDataManager.defineId(AncientZombieEntity.class, DataSerializers.BOOLEAN);
 
 
     public AncientZombieEntity(EntityType<? extends ZombieEntity> p_i48549_1_, World p_i48549_2_) {
@@ -37,6 +40,7 @@ public class AncientZombieEntity extends ZombieEntity {
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.getEntityData().define(freezingTimeData, 0);
+        this.getEntityData().define(lyingData, true);
     }
 
     public AncientZombieEntity(World p_i1745_1_) {
@@ -86,12 +90,14 @@ public class AncientZombieEntity extends ZombieEntity {
     public void addAdditionalSaveData(CompoundNBT nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putInt("freeze time",this.entityData.get(freezingTimeData));
+        nbt.putBoolean("lying",this.entityData.get(lyingData));
     }
 
     @Override
     public void readAdditionalSaveData(CompoundNBT nbt) {
         super.readAdditionalSaveData(nbt);
         this.entityData.set(freezingTimeData, nbt.getInt("freeze time"));
+        this.entityData.set(lyingData, nbt.getBoolean("lying"));
 
     }
 
@@ -101,16 +107,22 @@ public class AncientZombieEntity extends ZombieEntity {
 
     @Override
     public void tick() {
+        if(this.entityData.get(lyingData)){
+            this.addEffect(new EffectInstance(Effects.MOVEMENT_SLOWDOWN,20,20));
+        }
         int freezeTime = this.entityData.get(freezingTimeData);
         if(freezeTime>0){
             this.entityData.set(freezingTimeData,freezeTime-1);
         }else{
             BlockPos blockPos = new BlockPos((int)this.position().x,(int)this.position().y,(int)this.position().z);
-            int light = level.getBlockState(blockPos).getLightValue(level,blockPos);
-            if(light<8){
-                this.addEffect(new EffectInstance(Effects.DAMAGE_BOOST,10,8-light));
-                this.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE,10,8-light));
-                this.addEffect(new EffectInstance(Effects.POISON,10,8-light));
+            int light = level.getLightEmission(blockPos);
+            if(this.getHealth()<getMaxHealth()) {
+                this.entityData.set(lyingData, false);
+            }
+            if(light>5) {
+                this.addEffect(new EffectInstance(Effects.DAMAGE_BOOST,10,15-light));
+                this.addEffect(new EffectInstance(Effects.DAMAGE_RESISTANCE,10,15-light));
+                this.addEffect(new EffectInstance(Effects.POISON,10,15-light));
             }
             super.tick();
         }
