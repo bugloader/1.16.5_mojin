@@ -1,8 +1,12 @@
 package com.meacks.goldtoucher.entities.models;
 
+import net.minecraft.client.renderer.entity.ZombieRenderer;
 import net.minecraft.client.renderer.entity.model.AbstractZombieModel;
 import net.minecraft.entity.monster.ZombieEntity;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class AncientZombieModel <T extends ZombieEntity> extends AbstractZombieModel<T> {
 
     public AncientZombieModel(float p_i1168_1_, boolean p_i1168_2_) {
@@ -14,7 +18,7 @@ public class AncientZombieModel <T extends ZombieEntity> extends AbstractZombieM
     }
 
     public AncientZombieModel() {
-        this(0.5F, true);
+        this(0.0F, false);
     }
 
     public boolean isAggressive(T p_212850_1_) {
