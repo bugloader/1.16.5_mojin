@@ -15,6 +15,7 @@ public class ItemHandler {
     public static final List<Item> ITEMS = new ArrayList<>();
     public static final Item blackDonkeyHoof = new BlackDonkeyHoof();
     public static final Item boneSpicule = new BoneSpicule();
+    public static final Item mask = new Mask();
     //public static final Item bundleOfResinRope = new BundleOfResinRope();
     //public static final Item gasMask = new GasMask();
     //public static final Item metalClaw = new MetalClaw();

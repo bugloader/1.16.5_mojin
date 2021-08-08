@@ -134,7 +134,7 @@ public class GoldToucher
     public static class ClientRegistry {
         @SubscribeEvent
         public static void onClientSetUpEvent(FMLClientSetupEvent event) {
-            RenderingRegistry.registerEntityRenderingHandler(EntityHandler.ANCIENT_ZOMBIE_REGISTRY_OBJECT.get(), AncientZombieRender::new);
+            RenderingRegistry.registerEntityRenderingHandler(EntityHandler.ANCIENT_ZOMBIE_REGISTRY_OBJECT.get(), ZombieRenderer::new);
             RenderingRegistry.registerEntityRenderingHandler(EntityHandler.METAL_UMBRELLA_REGISTRY_OBJECT.get(), MetalUmbrellaRender::new);
 
         }
